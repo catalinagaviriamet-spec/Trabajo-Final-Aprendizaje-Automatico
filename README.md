@@ -114,6 +114,19 @@ make mlflow
 - El modelo ganador se evalúa sobre un conjunto de prueba separado; la validación cruzada se usa para elegir el mejor pipeline.
 - Los artefactos de MLflow y los modelos generados quedan en tu entorno local y no se suben a GitHub.
 
+## Arquitectura y uso de MLflow
+
+La arquitectura detallada del proyecto y la guía de interpretación de MLflow se encuentran en [docs/arquitectura_mlflow.md](docs/arquitectura_mlflow.md).
+
+### Alias `champion`
+
+El alias `champion` identifica la versión del modelo registrado que cumple las metas del proyecto. La asignación se hace solo si:
+
+- F1 macro en test >= 0.90
+- recall mínimo por clase >= 0.85
+
+Esto permite distinguir claramente entre modelos experimentales y la versión validada oficialmente para este proyecto.
+
 ## Resultados y selección
 
 Primer experimento: ganó la regresión logística (C=10), con F1 macro CV de 0.9630.
