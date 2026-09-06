@@ -1,0 +1,11 @@
+{
+  "seed": 42,
+  "test_size": 0.2,
+  "cv_folds": 5,
+  "scoring": "f1_macro",
+  "target_f1_macro": 0.9,
+  "minimum_class_recall": 0.85,
+  "experiment_name": "mobile-price-classification",
+  "dataset_url": "https://raw.githubusercontent.com/Yerlith/Aprendizaje-automatico/25f42d01c0f239d5b5daf51cb48b4370404a3ffb/data/mobile_prices.csv",
+  "dataset_sha256": "f9e8cd3154b8684a1be0ff401b1fba7750710af6bd076a399c6ce7ceb979c624"
+}

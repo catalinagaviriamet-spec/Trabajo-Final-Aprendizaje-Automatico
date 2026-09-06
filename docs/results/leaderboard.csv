@@ -1,0 +1,6 @@
+model,cv_f1_macro,cv_f1_std,cv_accuracy,train_f1_macro,best_params
+logistic_regression,0.9630399302913663,0.009183101289702544,0.963125,0.9846667685408812,"{""model__C"": 10}"
+xgboost,0.9049455213365786,0.01760151237195088,0.905,1.0,"{""model__learning_rate"": 0.1, ""model__max_depth"": 3}"
+random_forest,0.8737462150240678,0.03276110447652997,0.874375,1.0,"{""model__max_depth"": 12, ""model__min_samples_leaf"": 1}"
+svm,0.8585450339887377,0.009561635885147047,0.8575000000000002,0.9831478579730677,"{""model__C"": 1, ""model__gamma"": ""scale""}"
+dummy,0.1,0.0,0.25,0.1,{}

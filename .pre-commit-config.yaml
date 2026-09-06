@@ -1,2 +1,13 @@
-# Pendiente: configurar hooks de calidad de codigo.
-repos: []
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: Ruff check
+        entry: uv run ruff check
+        language: system
+        types_or: [python, jupyter]
+      - id: ruff-format
+        name: Ruff format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, jupyter]

@@ -15,3 +15,7 @@ logs/*
 !logs/.gitkeep
 mlruns/
 mlartifacts/
+.uv-cache/
+mlflow.db*
+artifacts/
+build/

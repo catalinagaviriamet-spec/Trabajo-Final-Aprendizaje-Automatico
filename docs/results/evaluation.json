@@ -1,0 +1,64 @@
+{
+  "winner": "logistic_regression",
+  "selection_rule": "maximum mean 5-fold CV macro F1 on train",
+  "train_rows": 1600,
+  "test_rows": 400,
+  "metrics": {
+    "test_accuracy": 0.975,
+    "test_f1_macro": 0.9750347085479645,
+    "test_ordinal_mae": 0.025,
+    "test_quadratic_kappa": 0.9899799599198397,
+    "test_severe_error_rate": 0.0
+  },
+  "acceptance_passed": true,
+  "classification_report": {
+    "0": {
+      "precision": 0.98989898989899,
+      "recall": 0.98,
+      "f1-score": 0.9849246231155779,
+      "support": 100.0
+    },
+    "1": {
+      "precision": 0.9795918367346939,
+      "recall": 0.96,
+      "f1-score": 0.9696969696969697,
+      "support": 100.0
+    },
+    "2": {
+      "precision": 0.9514563106796117,
+      "recall": 0.98,
+      "f1-score": 0.9655172413793104,
+      "support": 100.0
+    },
+    "3": {
+      "precision": 0.98,
+      "recall": 0.98,
+      "f1-score": 0.98,
+      "support": 100.0
+    },
+    "accuracy": 0.975,
+    "macro avg": {
+      "precision": 0.9752367843283238,
+      "recall": 0.975,
+      "f1-score": 0.9750347085479645,
+      "support": 400.0
+    },
+    "weighted avg": {
+      "precision": 0.9752367843283238,
+      "recall": 0.975,
+      "f1-score": 0.9750347085479645,
+      "support": 400.0
+    }
+  },
+  "best_params": {
+    "model__C": 10
+  },
+  "dataset_sha256": "f9e8cd3154b8684a1be0ff401b1fba7750710af6bd076a399c6ce7ceb979c624",
+  "versions": {
+    "scikit-learn": "1.9.0",
+    "xgboost": "3.4.1",
+    "mlflow": "3.16.0",
+    "pandas": "2.3.3"
+  },
+  "python": "3.12.14"
+}

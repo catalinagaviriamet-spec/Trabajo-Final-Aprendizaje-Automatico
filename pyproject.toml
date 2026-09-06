@@ -3,6 +3,26 @@ name = "trabajo-final-aprendizaje-automatico"
 version = "0.1.0"
 description = "Proyecto final de Aprendizaje automatico en la nube"
 readme = "README.md"
-dependencies = []
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "pandas>=2.2,<3", "numpy>=1.26,<3", "scikit-learn>=1.6,<2",
+  "xgboost>=2.1,<4", "mlflow>=3,<4", "matplotlib>=3.9,<4",
+  "seaborn>=0.13,<1", "joblib>=1.4,<2",
+]
 
-# Entorno y herramientas pendientes de definir.
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1", "nbformat>=5.10,<6", "nbclient>=0.10,<1", "ipykernel>=6,<8", "jupyterlab>=4,<5"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/*.ipynb" = ["E402"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
