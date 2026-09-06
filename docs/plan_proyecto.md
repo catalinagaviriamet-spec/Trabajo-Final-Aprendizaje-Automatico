@@ -13,22 +13,25 @@ no corresponden a umbrales monetarios comprobados ni a gamas actuales del mercad
 
 ## Integrantes
 
-- Carolina Tirado
-- Yerlith Zabala
-- Ana Catalina Gaviria
+- Carolina Tirado Osorio — usuario de GitHub pendiente de confirmar.
+- [Yerlith Zabala](https://github.com/Yerlith).
+- [Ana Catalina Gaviria](https://github.com/catalinagaviriamet-spec).
 
-Todos deben comprender el flujo completo y aportar commits propios. La siguiente
-distribución es una propuesta para revisar con el grupo; no registra trabajo ya realizado.
+Las tres integrantes participan conjuntamente en el diseño y las decisiones del proyecto.
+El grupo discute el problema, los datos y la metodología, y comparte la responsabilidad
+de comprender el flujo completo. El desarrollo y la revisión de las fases pendientes
+se harán en conjunto. Cada integrante debe aportar commits propios, según el profesor.
 Entrega: sábado 12 de septiembre de 2026. Cronograma intensivo propuesto del 6 al 12.
-La fecha está confirmada por el equipo; las responsabilidades son sugeridas.
+La fecha está confirmada por el equipo. El cronograma describe actividades previstas;
+no acredita por sí mismo su ejecución. Véase la [guía de colaboración](colaboracion.md).
 
-| Día | Entregable | Responsable propuesto | Revisión |
+| Día | Entregable | Responsables | Revisión |
 |---|---|---|---|
-| Domingo 6 | Revisar problema, diccionario, EDA y baseline preparados | Carolina Tirado | Yerlith Zabala |
-| Lunes 7 | Revisar experimentos, resultados, MLflow y modelo registrado | Yerlith Zabala | Ana Catalina Gaviria |
-| Martes 8 | Implementar flow Prefect y programación automática | Yerlith Zabala | Carolina Tirado |
-| Miércoles 9 | Implementar API FastAPI, validación y Docker | Ana Catalina Gaviria | Yerlith Zabala |
-| Jueves 10 | Reporte de drift simulado y cierre de funcionalidades | Carolina Tirado | Ana Catalina Gaviria |
+| Domingo 6 | Revisar problema, diccionario, EDA y baseline preparados | Las tres integrantes | Revisión conjunta |
+| Lunes 7 | Revisar experimentos, resultados, MLflow y modelo registrado | Las tres integrantes | Revisión conjunta |
+| Martes 8 | Implementar flow Prefect y programación automática | Las tres integrantes | Revisión conjunta |
+| Miércoles 9 | Implementar API FastAPI, validación y Docker | Las tres integrantes | Revisión conjunta |
+| Jueves 10 | Reporte de drift simulado y cierre de funcionalidades | Las tres integrantes | Revisión conjunta |
 | Viernes 11 | Reproducción desde cero, pruebas y ensayo de demostración | Las tres integrantes | Revisión conjunta |
 | Sábado 12 | Verificación final y entrega; sin nuevas funcionalidades | Las tres integrantes | Revisión conjunta |
 

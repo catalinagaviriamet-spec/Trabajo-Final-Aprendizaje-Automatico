@@ -3,8 +3,14 @@
 Proyecto de Aprendizaje automático en la nube — Especialización en Ciencia de Datos e IA,
 Universidad de Medellín.
 
-**Integrantes:** Carolina Tirado, Yerlith Zabala y Ana Catalina Gaviria.
+**Integrantes:** Carolina Tirado Osorio, [Yerlith Zabala](https://github.com/Yerlith)
+y [Ana Catalina Gaviria](https://github.com/catalinagaviriamet-spec).
 **Entrega:** sábado 12 de septiembre de 2026.
+
+El diseño del proyecto se ha trabajado conjuntamente entre las tres integrantes:
+la definición del problema, la selección de datos y las decisiones metodológicas
+se discuten en equipo. La revisión y el desarrollo de las siguientes fases también
+se realizarán de forma conjunta. Consulte la [guía de colaboración](docs/colaboracion.md).
 
 ## Problema y objetivo
 
@@ -114,7 +120,7 @@ uv; para activarlos instale pre-commit y ejecute pre-commit install.
 ## Plan y limitaciones
 
 Consulte el [cronograma diario del 6 al 12 de septiembre](docs/plan_proyecto.md),
-con responsables propuestos. Cada integrante debe aportar commits propios y entender el flujo.
+con responsabilidad y revisión conjunta. Cada integrante debe aportar commits propios y entender el flujo.
 
 La RAM puede estar asociada con la gama, pero correlación no significa causalidad.
 Existen ceros cuestionables en dimensiones de pantalla; se documentan y se conservan
