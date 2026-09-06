@@ -29,7 +29,7 @@ no acredita por sí mismo su ejecución. Véase la [guía de colaboración](cola
 |---|---|---|---|
 | Domingo 6 | Revisar problema, diccionario, EDA y baseline preparados | Las tres integrantes | Revisión conjunta |
 | Lunes 7 | Revisar experimentos, resultados, MLflow y modelo registrado | Las tres integrantes | Revisión conjunta |
-| Martes 8 | Implementar flow Prefect y programación automática | Las tres integrantes | Revisión conjunta |
+| Martes 8 | Revisar y demostrar el flow Prefect y su programación ya implementados | Las tres integrantes | Revisión conjunta |
 | Miércoles 9 | Implementar API FastAPI, validación y Docker | Las tres integrantes | Revisión conjunta |
 | Jueves 10 | Reporte de drift simulado y cierre de funcionalidades | Las tres integrantes | Revisión conjunta |
 | Viernes 11 | Reproducción desde cero, pruebas y ensayo de demostración | Las tres integrantes | Revisión conjunta |
@@ -76,9 +76,10 @@ investigar después con permutación en validación, sin reutilizar el test para
 ## Alcance y siguientes fases
 
 Esta entrega implementa la lectura remota sin persistir datos, EDA, comparación de modelos, tracking,
-registro con alias champion condicionado a las metas, pruebas y CI.
+registro con alias champion condicionado a las metas, pruebas y CI. También se implementó
+el [pipeline de Prefect](pipeline.md), con programación local configurable y sin persistir el dataset.
 
-Pendientes: flows y scheduling en Prefect, validación de entradas de una API FastAPI,
+Pendientes: validación de entradas de una API FastAPI,
 Dockerfile, reporte de drift y demostración completa. Nube opcional. No se han desplegado
 servicios ni contratado recursos cloud. No se debe marcar el proyecto MLOps completo aún.
 

@@ -32,9 +32,10 @@ Las instrucciones originales se conservan sin cambios en [README.profe](README.p
 - Comparación de Dummy, regresión logística, SVM, Random Forest y XGBoost.
 - Validación cruzada estratificada de cinco folds y test separado 80/20, semilla 42.
 - Tracking en MLflow, registro del mejor pipeline y alias champion si cumple las metas.
+- Pipeline Prefect con validación, reintentos de conexión y programación local configurable.
 - Pruebas unitarias y controles de calidad con Ruff y GitHub Actions.
 
-**Pendientes del proyecto completo:** Prefect y scheduling, API, Docker, reporte de drift
+**Pendientes del proyecto completo:** API, Docker, reporte de drift
 y guía de despliegue. Las carpetas correspondientes se conservan para esas fases.
 El workflow deploy.yml sigue siendo una plantilla manual, sin despliegue real.
 
@@ -66,7 +67,7 @@ misma configuración verifica reproducción; no convierte el test en un conjunto
 
 Primer experimento: ganó la regresión logística (C=10), con F1 macro CV de 0.9630.
 En test obtuvo **97.5 % de accuracy (390/400)** y **F1 macro de 0.9750**.
-Verificación local: 10 pruebas aprobadas y tres notebooks ejecutados sin errores.
+Verificación local: 18 pruebas aprobadas y tres notebooks ejecutados sin errores.
 
 Consulte la [comparación por validación cruzada](docs/results/leaderboard.csv), la
 [evaluación final](docs/results/evaluation.json) y el [resumen interpretado](docs/resultados.md).
@@ -89,6 +90,18 @@ mobile-price-classifier. El alias champion se asigna solo si pasa las metas acad
 MLflow y el modelo binario son locales; para reconstruirlos en otro equipo ejecute el
 entrenamiento. Los artefactos no se suben a GitHub.
 
+## Automatizar con Prefect
+
+```sh
+uv run python -m src.pipeline check
+uv run python -m src.pipeline run
+```
+
+El primer comando valida; el segundo entrena y registra el modelo. Los datos se mantienen
+en memoria. Consulte la [guía de Prefect](docs/pipeline.md) para abrir el panel y activar
+el horario diario de ejemplo a las 08:00 de Colombia. La programación requiere servidor
+y ejecutor activos; no queda funcionando automáticamente al clonar el repositorio.
+
 ## Calidad
 
 ```sh
@@ -109,6 +122,8 @@ uv; para activarlos instale pre-commit y ejecute pre-commit install.
 | src/data/ | Lectura por URL y contrato de datos |
 | src/features/ | Preprocesamiento dentro del pipeline |
 | src/models/ | Candidatos, búsqueda, evaluación y tracking |
+| src/pipeline/ | Flows y tareas de Prefect; ejecución única y programada |
+| configs/pipeline.json | Horario de ejemplo y zona horaria |
 | notebooks/ | EDA, baseline y lectura de experimentos |
 | tests/unit/ | Contrato, particiones y aislamiento del escalado |
 | docs/ | Dataset, plan, cronograma y resultados |

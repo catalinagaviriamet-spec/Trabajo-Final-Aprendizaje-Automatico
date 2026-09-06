@@ -1,0 +1,44 @@
+{
+  "flow_state": "Completed",
+  "tasks": [
+    {
+      "name": "preparar-datos",
+      "state": "Completed"
+    },
+    {
+      "name": "entrenar-evaluar-registrar",
+      "state": "Completed"
+    },
+    {
+      "name": "validar-datos",
+      "state": "Completed"
+    },
+    {
+      "name": "leer-url-en-memoria",
+      "state": "Completed"
+    }
+  ],
+  "schedule": {
+    "cron": "0 8 * * *",
+    "timezone": "America/Bogota",
+    "verification_paused": true
+  },
+  "csv_files_in_data": 0,
+  "result": {
+    "mode": "training",
+    "rows": 2000,
+    "predictors": 20,
+    "dataset_sha256": "f9e8cd3154b8684a1be0ff401b1fba7750710af6bd076a399c6ce7ceb979c624",
+    "prefect_version": "3.8.5",
+    "winner": "logistic_regression",
+    "metrics": {
+      "test_accuracy": 0.975,
+      "test_f1_macro": 0.9750347085479645,
+      "test_ordinal_mae": 0.025,
+      "test_quadratic_kappa": 0.9899799599198397,
+      "test_severe_error_rate": 0.0
+    },
+    "acceptance_passed": true,
+    "completed_at_utc": "2026-09-06T22:04:58.000856+00:00"
+  }
+}

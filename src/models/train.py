@@ -21,17 +21,19 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
-from src.data.dataset import ROOT, config, load_data, split_data
+from src.data.dataset import ROOT, config, load_data, split_data, validate
 from src.models.candidates import candidates
 
 plt.switch_backend("Agg")
 
 
-def train():
+def train(frame=None):
+    """Acepta datos ya leídos por Prefect o los obtiene por URL al usarse como CLI."""
     settings = config()
     output = ROOT / "docs/results"
     output.mkdir(parents=True, exist_ok=True)
-    x_train, x_test, y_train, y_test = split_data(load_data())
+    frame = load_data() if frame is None else validate(frame)
+    x_train, x_test, y_train, y_test = split_data(frame)
     cv = StratifiedKFold(settings["cv_folds"], shuffle=True, random_state=settings["seed"])
     mlflow.set_tracking_uri(f"sqlite:///{(ROOT / 'mlflow.db').as_posix()}")
     mlflow.set_experiment(settings["experiment_name"])

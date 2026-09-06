@@ -1,0 +1,6 @@
+{
+  "deployment_name": "entrenamiento-local",
+  "cron": "0 8 * * *",
+  "timezone": "America/Bogota",
+  "description": "Reproducción diaria del experimento académico a las 08:00 de Colombia; requiere servidor y ejecutor activos."
+}
