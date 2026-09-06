@@ -131,6 +131,7 @@ Si prefieres hacerlo desde Python:
 
 ```python
 from mlflow import MlflowClient
+
 client = MlflowClient()
 print(client.get_model_version_by_alias("mobile-price-classifier", "champion"))
 ```
