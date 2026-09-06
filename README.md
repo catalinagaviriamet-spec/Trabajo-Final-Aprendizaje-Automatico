@@ -39,29 +39,80 @@ Las instrucciones originales se conservan sin cambios en [README.profe](README.p
 y guía de despliegue. Las carpetas correspondientes se conservan para esas fases.
 El workflow deploy.yml sigue siendo una plantilla manual, sin despliegue real.
 
-## Instalación y primer recorrido
+## Inicio rápido
 
 Requisitos: Git y [uv](https://docs.astral.sh/uv/getting-started/installation/).
-Use Python 3.12; uv puede instalarlo si no está disponible. Ejecute en una terminal:
+Este proyecto usa Python 3.12. Si aún no lo tienes, `uv` puede instalarlo por ti.
+
+### 1) Clonar y preparar el entorno
 
 ```sh
 git clone https://github.com/catalinagaviriamet-spec/Trabajo-Final-Aprendizaje-Automatico.git
 cd Trabajo-Final-Aprendizaje-Automatico
 uv sync --locked --python 3.12
+```
+
+`uv sync` crea el entorno virtual y instala las dependencias del archivo `uv.lock`.
+No necesitas activar el entorno manualmente si usas `uv run`.
+
+### 2) Ejecutar la validación de datos
+
+```sh
 uv run python -m src.data.dataset
+```
+
+Este paso valida el dataset, comprueba el esquema y realiza la verificación inicial del flujo de datos.
+
+### 3) Entrenar el modelo
+
+```sh
 uv run python -m src.models.train
+```
+
+Este comando ejecuta el pipeline completo de entrenamiento, compara modelos y guarda los resultados locales y en MLflow.
+
+### 4) Abrir los notebooks
+
+```sh
 uv run jupyter lab
 ```
 
-uv sync crea .venv e instala las versiones de uv.lock. No necesita activar el
-entorno cuando usa uv run. La lectura por URL requiere Internet, sin descarga manual, CSV local ni cuenta Kaggle.
-Abra los notebooks en orden 01, 02 y 03. En Jupyter seleccione el kernel Python 3
-del entorno del proyecto. El notebook 03 muestra los resultados guardados; si faltan,
-ejecuta el entrenamiento. Los resultados incluidos en GitHub se pueden leer sin entrenar.
+Abre los notebooks en este orden:
 
-Para repetir el experimento ejecute de nuevo el comando de entrenamiento.
-Se crean nuevas ejecuciones MLflow y se reemplazan los reportes locales. Repetir con la
-misma configuración verifica reproducción; no convierte el test en un conjunto nuevo.
+1. `01_eda.ipynb`
+2. `02_baseline.ipynb`
+3. `03_experiments.ipynb`
+
+En Jupyter, selecciona el kernel de Python 3 del entorno del proyecto.
+
+### 5) Ver resultados
+
+Los archivos de resultados ya incluidos en el repositorio se pueden consultar sin entrenar nuevamente. Si deseas repetir la experimentación, vuelve a ejecutar el entrenamiento.
+
+## Comandos útiles
+
+Con el proyecto ya configurado, puedes usar estas opciones:
+
+```sh
+make install
+make train
+make test
+make lint
+make mlflow
+```
+
+- `make install`: instala dependencias
+- `make train`: ejecuta el entrenamiento
+- `make test`: corre las pruebas unitarias
+- `make lint`: valida estilo y formato
+- `make mlflow`: abre la interfaz de MLflow en http://127.0.0.1:5000
+
+## Notas importantes
+
+- La lectura del dataset usa Internet y no requiere bajar un CSV manualmente.
+- La reproducción del experimento con la misma configuración es consistente.
+- El modelo ganador se evalúa sobre un conjunto de prueba separado; la validación cruzada se usa para elegir el mejor pipeline.
+- Los artefactos de MLflow y los modelos generados quedan en tu entorno local y no se suben a GitHub.
 
 ## Resultados y selección
 
