@@ -3425,6 +3425,7 @@ name = "trabajo-final-aprendizaje-automatico"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "fastapi" },
     { name = "joblib" },
     { name = "matplotlib" },
     { name = "mlflow" },
@@ -3432,8 +3433,10 @@ dependencies = [
     { name = "numpy", version = "2.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "pandas" },
     { name = "prefect" },
+    { name = "pydantic" },
     { name = "scikit-learn" },
     { name = "seaborn" },
+    { name = "uvicorn" },
     { name = "xgboost", version = "3.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "xgboost", version = "3.4.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
@@ -3450,14 +3453,17 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "fastapi", specifier = ">=0.141,<1" },
     { name = "joblib", specifier = ">=1.4,<2" },
     { name = "matplotlib", specifier = ">=3.9,<4" },
     { name = "mlflow", specifier = ">=3,<4" },
     { name = "numpy", specifier = ">=1.26,<3" },
     { name = "pandas", specifier = ">=2.2,<3" },
     { name = "prefect", specifier = ">=3.4,<4" },
+    { name = "pydantic", specifier = ">=2.13,<3" },
     { name = "scikit-learn", specifier = ">=1.6,<2" },
     { name = "seaborn", specifier = ">=0.13,<1" },
+    { name = "uvicorn", specifier = ">=0.52,<1" },
     { name = "xgboost", specifier = ">=2.1,<4" },
 ]
 

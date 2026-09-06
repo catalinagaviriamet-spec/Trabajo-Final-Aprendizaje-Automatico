@@ -1,0 +1,23 @@
+services:
+  train:
+    build: .
+    image: mobile-prices:local
+    command: ["python", "-m", "src.pipeline", "run"]
+    volumes:
+      - trained-model:/app/models
+    profiles: ["training"]
+  api:
+    build: .
+    image: mobile-prices:local
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - trained-model:/app/models:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      interval: 5s
+      timeout: 6s
+      retries: 12
+      start_period: 15s
+volumes:
+  trained-model:

@@ -1,0 +1,22 @@
+name: Docker y API
+on:
+  workflow_dispatch:
+  push:
+    paths: ["Dockerfile", "compose.yaml", "pyproject.toml", "uv.lock", "src/**", "configs/**", "scripts/verify_api.py", ".github/workflows/docker.yml"]
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose build
+      - run: docker compose run --name mobile-prices-training train
+      - run: docker compose up -d --wait api
+      - run: docker compose exec -T api python -c "import urllib.request; print(urllib.request.urlopen('http://localhost:8000/health').read().decode())"
+      - run: |
+          docker cp scripts/verify_api.py $(docker compose ps -q api):/app/verify_api.py
+          docker compose exec -T api python verify_api.py
+      - if: always()
+        run: docker compose logs && docker compose down

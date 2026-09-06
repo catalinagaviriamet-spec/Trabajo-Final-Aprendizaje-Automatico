@@ -33,10 +33,10 @@ Las instrucciones originales se conservan sin cambios en [README.profe](README.p
 - Validación cruzada estratificada de cinco folds y test separado 80/20, semilla 42.
 - Tracking en MLflow, registro del mejor pipeline y alias champion si cumple las metas.
 - Pipeline Prefect con validación, reintentos de conexión y programación local configurable.
+- API FastAPI de predicción y ejecución reproducible con Docker Compose.
 - Pruebas unitarias y controles de calidad con Ruff y GitHub Actions.
 
-**Pendientes del proyecto completo:** API, Docker, reporte de drift
-y guía de despliegue. Las carpetas correspondientes se conservan para esas fases.
+**Pendientes del proyecto completo:** reporte de drift y diseño de monitoreo.
 El workflow deploy.yml sigue siendo una plantilla manual, sin despliegue real.
 
 ## Inicio rápido
@@ -131,7 +131,7 @@ Esto permite distinguir claramente entre modelos experimentales y la versión va
 
 Primer experimento: ganó la regresión logística (C=10), con F1 macro CV de 0.9630.
 En test obtuvo **97.5 % de accuracy (390/400)** y **F1 macro de 0.9750**.
-Verificación local: 18 pruebas aprobadas y tres notebooks ejecutados sin errores.
+Verificación local: 26 pruebas aprobadas y tres notebooks ejecutados sin errores.
 
 Consulte la [comparación por validación cruzada](docs/results/leaderboard.csv), la
 [evaluación final](docs/results/evaluation.json) y el [resumen interpretado](docs/resultados.md).
@@ -166,6 +166,21 @@ en memoria. Consulte la [guía de Prefect](docs/pipeline.md) para abrir el panel
 el horario diario de ejemplo a las 08:00 de Colombia. La programación requiere servidor
 y ejecutor activos; no queda funcionando automáticamente al clonar el repositorio.
 
+## API y Docker en otro PC
+
+Con Docker Desktop abierto e Internet, desde la raíz ejecute en orden:
+
+```sh
+docker compose build
+docker compose run --name mobile-prices-training train
+docker compose up -d --wait api
+```
+
+Abra http://127.0.0.1:8000/docs y pruebe POST /predict con el JSON sintético de
+configs/prediction_example.json. No necesita Python, cuenta Kaggle ni contraseñas.
+El entrenamiento lee los datos en memoria y guarda el modelo en un volumen Docker.
+Consulte la [guía completa](docs/docker.md) para instalación, repetición y diagnóstico.
+
 ## Calidad
 
 ```sh
@@ -174,8 +189,9 @@ uv run ruff check .
 uv run ruff format --check .
 ```
 
-CI ejecuta estas verificaciones en cada push y pull request. No entrena modelos ni
-consume servicios cloud. .pre-commit-config.yaml contiene hooks opcionales que usan
+CI ejecuta estas verificaciones en cada push y pull request. El workflow Docker y API
+también construye, entrena y prueba HTTP en Linux cuando cambia la implementación.
+No requiere credenciales cloud. .pre-commit-config.yaml contiene hooks opcionales que usan
 uv; para activarlos instale pre-commit y ejecute pre-commit install.
 
 ## Organización del repositorio
@@ -191,7 +207,9 @@ uv; para activarlos instale pre-commit y ejecute pre-commit install.
 | notebooks/ | EDA, baseline y lectura de experimentos |
 | tests/unit/ | Contrato, particiones y aislamiento del escalado |
 | docs/ | Dataset, plan, cronograma y resultados |
-| src/api/, src/monitoring/ | Reservadas para siguientes fases |
+| src/api/ | API FastAPI, salud y predicción de un celular |
+| Dockerfile, compose.yaml | Entrenamiento y servicio local en contenedores |
+| src/monitoring/ | Reservada para la siguiente fase |
 | data/, models/, logs/ | Carpetas de estructura; data permanece vacía; modelos y logs ignorados por Git |
 | scripts/build_notebooks.py | Reconstruye fuentes de notebooks; borra sus salidas al ejecutarse |
 | .github/workflows/ | CI implementado y despliegue pendiente |

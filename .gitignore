@@ -16,6 +16,8 @@ logs/*
 mlruns/
 mlartifacts/
 .uv-cache/
+.docker-build/
+resultados-docker/
 mlflow.db*
 artifacts/
 build/
