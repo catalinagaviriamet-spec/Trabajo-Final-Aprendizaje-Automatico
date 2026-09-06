@@ -1,0 +1,11 @@
+name: ci (pendiente)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pendiente:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Estado inicial
+        run: echo "Plantilla pendiente de implementar"

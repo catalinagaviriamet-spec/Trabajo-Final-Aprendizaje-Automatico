@@ -1,0 +1,8 @@
+[project]
+name = "trabajo-final-aprendizaje-automatico"
+version = "0.1.0"
+description = "Proyecto final de Aprendizaje automatico en la nube"
+readme = "README.md"
+dependencies = []
+
+# Entorno y herramientas pendientes de definir.
