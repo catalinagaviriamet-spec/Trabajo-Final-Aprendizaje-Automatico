@@ -13,7 +13,7 @@ no corresponden a umbrales monetarios comprobados ni a gamas actuales del mercad
 
 ## Integrantes
 
-- Carolina Tirado Osorio — usuario de GitHub pendiente de confirmar.
+- [Carolina Tirado Osorio](https://github.com/Caro-Tirado).
 - [Yerlith Zabala](https://github.com/Yerlith).
 - [Ana Catalina Gaviria](https://github.com/catalinagaviriamet-spec).
 

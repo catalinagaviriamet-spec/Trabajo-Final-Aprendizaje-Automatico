@@ -3,7 +3,7 @@
 Proyecto de Aprendizaje automático en la nube — Especialización en Ciencia de Datos e IA,
 Universidad de Medellín.
 
-**Integrantes:** Carolina Tirado Osorio, [Yerlith Zabala](https://github.com/Yerlith)
+**Integrantes:** [Carolina Tirado Osorio](https://github.com/Caro-Tirado), [Yerlith Zabala](https://github.com/Yerlith)
 y [Ana Catalina Gaviria](https://github.com/catalinagaviriamet-spec).
 **Entrega:** sábado 12 de septiembre de 2026.
 

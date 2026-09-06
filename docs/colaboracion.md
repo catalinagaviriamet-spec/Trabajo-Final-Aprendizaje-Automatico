@@ -11,7 +11,7 @@ El cronograma no divide la autoría del diseño en módulos exclusivos de una in
 
 | Integrante | Cuenta de GitHub |
 |---|---|
-| Carolina Tirado Osorio | Pendiente de confirmar |
+| Carolina Tirado Osorio | [Caro-Tirado](https://github.com/Caro-Tirado) |
 | Yerlith Zabala | [Yerlith](https://github.com/Yerlith) |
 | Ana Catalina Gaviria | [catalinagaviriamet-spec](https://github.com/catalinagaviriamet-spec) |
 
