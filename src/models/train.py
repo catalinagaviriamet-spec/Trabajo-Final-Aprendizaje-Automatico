@@ -10,6 +10,7 @@ import mlflow
 import mlflow.sklearn
 import numpy as np
 import pandas as pd
+import xgboost
 from mlflow.models import infer_signature
 from sklearn.metrics import (
     ConfusionMatrixDisplay,
@@ -114,7 +115,10 @@ def train(frame=None):
         "classification_report": report,
         "best_params": searches[winner].best_params_,
         "dataset_sha256": settings["dataset_sha256"],
-        "versions": {p: version(p) for p in ["scikit-learn", "xgboost", "mlflow", "pandas"]},
+        "versions": {
+            **{p: version(p) for p in ["scikit-learn", "mlflow", "pandas"]},
+            "xgboost": xgboost.__version__,
+        },
         "python": platform.python_version(),
     }
     (output / "evaluation.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")

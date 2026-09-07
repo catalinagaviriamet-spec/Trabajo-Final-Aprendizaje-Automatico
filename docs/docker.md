@@ -5,6 +5,8 @@ o Docker Desktop abierto, Internet y espacio para descargar la imagen y dependen
 No necesita Python, uv, cuenta Kaggle, claves ni instalar los paquetes por separado.
 Git facilita clonar; también puede obtener el ZIP público del repositorio.
 La primera construcción puede tardar varios minutos y ocupar varios GB.
+En Linux x86_64 se instala XGBoost 3.4.1 para CPU para evitar descargar componentes
+NVIDIA innecesarios. En otras plataformas se conserva la distribución general.
 
 En Windows use Docker Desktop con contenedores Linux y WSL 2, siguiendo la
 [instalación oficial](https://docs.docker.com/desktop/setup/install/windows-install/).

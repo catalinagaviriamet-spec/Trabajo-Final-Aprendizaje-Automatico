@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
 WORKDIR /app
 ENV UV_PYTHON_DOWNLOADS=never PYTHONUNBUFFERED=1 PATH="/app/.venv/bin:$PATH"
 COPY pyproject.toml uv.lock README.md ./
-RUN uv sync --locked --no-dev && uv cache clean
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --no-dev
 COPY src ./src
 COPY configs ./configs
 RUN mkdir -p models docs/results logs

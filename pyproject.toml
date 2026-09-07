@@ -3,10 +3,12 @@ name = "trabajo-final-aprendizaje-automatico"
 version = "0.1.0"
 description = "Proyecto final de Aprendizaje automatico en la nube"
 readme = "README.md"
-requires-python = ">=3.11,<3.13"
+requires-python = ">=3.12,<3.13"
 dependencies = [
   "pandas>=2.2,<3", "numpy>=1.26,<3", "scikit-learn>=1.6,<2",
-  "xgboost>=2.1,<4", "mlflow>=3,<4", "matplotlib>=3.9,<4",
+  "xgboost-cpu==3.4.1; sys_platform == 'linux' and platform_machine == 'x86_64'",
+  "xgboost==3.4.1; sys_platform != 'linux' or platform_machine != 'x86_64'",
+  "mlflow>=3,<4", "matplotlib>=3.9,<4",
   "seaborn>=0.13,<1", "joblib>=1.4,<2", "prefect>=3.4,<4",
   "fastapi>=0.141,<1", "uvicorn>=0.52,<1", "pydantic>=2.13,<3",
 ]
