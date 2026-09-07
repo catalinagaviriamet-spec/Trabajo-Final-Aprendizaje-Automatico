@@ -12,6 +12,25 @@ la definición del problema, la selección de datos y las decisiones metodológi
 se discuten en equipo. La revisión y el desarrollo de las siguientes fases también
 se realizarán de forma conjunta. Consulte la [guía de colaboración](docs/colaboracion.md).
 
+## Abrir y probar la API FastAPI
+
+**[Abrir la API local para hacer una predicción](http://127.0.0.1:8000/docs)**
+
+Este enlace funciona después de iniciar el proyecto con Docker en el mismo PC
+donde abre el navegador. `127.0.0.1` significa «este equipo»: GitHub aloja el código,
+pero no mantiene la API encendida ni conecta al equipo de las integrantes.
+
+- **Primera vez:** siga [API y Docker en otro PC](#api-y-docker-en-otro-pc).
+- **Con la API iniciada:** abra el enlace y seleccione **POST /predict → Try it out → Execute**.
+  El ejemplo ya está precargado y devuelve `price_range: 2`, «Precio alto».
+- **Para experimentar:** cambie `ram` de 2000 a 1000 y ejecute otra vez;
+  con las demás características del ejemplo iguales devuelve «Precio medio».
+- **Si no abre:** compruebe que Docker esté funcionando y ejecute
+  `docker compose up -d --wait api` desde el repositorio, después de entrenar.
+
+Código de la API: [src/api/main.py](src/api/main.py).
+Guía completa de instalación y uso: [docs/docker.md](docs/docker.md).
+
 ## Problema y objetivo
 
 Apoyar a una fábrica hipotética en la clasificación de un celular en una gama de precio
