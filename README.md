@@ -34,9 +34,10 @@ Las instrucciones originales se conservan sin cambios en [README.profe](README.p
 - Tracking en MLflow, registro del mejor pipeline y alias champion si cumple las metas.
 - Pipeline Prefect con validación, reintentos de conexión y programación local configurable.
 - API FastAPI de predicción y ejecución reproducible con Docker Compose.
+- Reporte de drift simulado y diseño de monitoreo con umbrales y acciones.
 - Pruebas unitarias y controles de calidad con Ruff y GitHub Actions.
 
-**Pendientes del proyecto completo:** reporte de drift y diseño de monitoreo.
+**Pendientes de cierre:** revisión conjunta de la entrega, rúbrica y contribuciones individuales.
 El workflow deploy.yml sigue siendo una plantilla manual, sin despliegue real.
 
 ## Inicio rápido
@@ -131,7 +132,7 @@ Esto permite distinguir claramente entre modelos experimentales y la versión va
 
 Primer experimento: ganó la regresión logística (C=10), con F1 macro CV de 0.9630.
 En test obtuvo **97.5 % de accuracy (390/400)** y **F1 macro de 0.9750**.
-Verificación local: 26 pruebas aprobadas y tres notebooks ejecutados sin errores.
+Verificación local: 31 pruebas aprobadas y tres notebooks ejecutados sin errores.
 
 Consulte la [comparación por validación cruzada](docs/results/leaderboard.csv), la
 [evaluación final](docs/results/evaluation.json) y el [resumen interpretado](docs/resultados.md).
@@ -181,6 +182,19 @@ configs/prediction_example.json. No necesita Python, cuenta Kaggle ni contraseñ
 El entrenamiento lee los datos en memoria y guarda el modelo en un volumen Docker.
 Consulte la [guía completa](docs/docker.md) para instalación, repetición y diagnóstico.
 
+## Monitoreo
+
+```sh
+uv run python -m src.monitoring
+```
+
+Con Docker: `docker compose run --rm monitor`, después de construir la imagen.
+Abra `docs/results/monitoring/drift.html`: el lote sin alteraciones no genera alertas;
+al aumentar RAM y batería en una simulación, ambas variables generan alerta.
+No son observaciones de producción y no demuestran pérdida de precisión.
+Consulte la [explicación, metodología y diseño de monitoreo](docs/monitoreo.md).
+Solo se guardan estadísticas agregadas; la API no recolecta automáticamente lotes.
+
 ## Calidad
 
 ```sh
@@ -209,7 +223,7 @@ uv; para activarlos instale pre-commit y ejecute pre-commit install.
 | docs/ | Dataset, plan, cronograma y resultados |
 | src/api/ | API FastAPI, salud y predicción de un celular |
 | Dockerfile, compose.yaml | Entrenamiento y servicio local en contenedores |
-| src/monitoring/ | Reservada para la siguiente fase |
+| src/monitoring/ | Reporte de drift y calibración del umbral sin usar test |
 | data/, models/, logs/ | Carpetas de estructura; data permanece vacía; modelos y logs ignorados por Git |
 | scripts/build_notebooks.py | Reconstruye fuentes de notebooks; borra sus salidas al ejecutarse |
 | .github/workflows/ | CI implementado y despliegue pendiente |

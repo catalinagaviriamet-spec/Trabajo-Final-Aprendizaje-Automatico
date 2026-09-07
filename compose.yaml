@@ -1,4 +1,11 @@
 services:
+  monitor:
+    build: .
+    image: mobile-prices:local
+    command: ["python", "-m", "src.monitoring"]
+    volumes:
+      - ./docs/results/monitoring:/app/docs/results/monitoring
+    profiles: ["monitoring"]
   train:
     build: .
     image: mobile-prices:local

@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: docker compose build
+      - run: docker compose run --rm monitor
       - run: docker compose run --name mobile-prices-training train
       - run: docker compose up -d --wait api
       - run: docker compose exec -T api python -c "import urllib.request; print(urllib.request.urlopen('http://localhost:8000/health').read().decode())"

@@ -46,4 +46,8 @@ El proyecto es reproducible, validado y bien documentado. La regresión logísti
 
 ## 7. Siguiente paso recomendado
 
-Implementar API, despliegue y monitorización para convertir el prototipo en un servicio operativo.
+La API y el despliegue local con Docker ya están implementados. También hay un
+[reporte de drift simulado y diseño de monitoreo](monitoreo.md). Para la demostración,
+mostrar primero una predicción y después el reporte: el lote de control no alerta y
+la simulación detecta cambios en RAM y batería. El monitoreo continuo de producción
+no está desplegado; se documentan las señales, umbrales y acciones propuestas.

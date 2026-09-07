@@ -30,8 +30,8 @@ no acredita por sí mismo su ejecución. Véase la [guía de colaboración](cola
 | Domingo 6 | Revisar problema, diccionario, EDA y baseline preparados | Las tres integrantes | Revisión conjunta |
 | Lunes 7 | Revisar experimentos, resultados, MLflow y modelo registrado | Las tres integrantes | Revisión conjunta |
 | Martes 8 | Revisar y demostrar el flow Prefect y su programación ya implementados | Las tres integrantes | Revisión conjunta |
-| Miércoles 9 | Implementar API FastAPI, validación y Docker | Las tres integrantes | Revisión conjunta |
-| Jueves 10 | Reporte de drift simulado y cierre de funcionalidades | Las tres integrantes | Revisión conjunta |
+| Miércoles 9 | Revisar y demostrar API FastAPI, validación y Docker implementados | Las tres integrantes | Revisión conjunta |
+| Jueves 10 | Revisar reporte de drift simulado y diseño de monitoreo implementados | Las tres integrantes | Revisión conjunta |
 | Viernes 11 | Reproducción desde cero, pruebas y ensayo de demostración | Las tres integrantes | Revisión conjunta |
 | Sábado 12 | Verificación final y entrega; sin nuevas funcionalidades | Las tres integrantes | Revisión conjunta |
 
@@ -79,22 +79,19 @@ Esta entrega implementa la lectura remota sin persistir datos, EDA, comparación
 registro con alias champion condicionado a las metas, pruebas y CI. También se implementó
 el [pipeline de Prefect](pipeline.md), con programación local configurable y sin persistir el dataset.
 
-Pendientes: validación de entradas de una API FastAPI,
-Dockerfile, reporte de drift y demostración completa. Nube opcional. No se han desplegado
-servicios ni contratado recursos cloud. No se debe marcar el proyecto MLOps completo aún.
+También están implementados API FastAPI con validación, Docker y el reporte de drift
+simulado. Pendientes de cierre: revisión conjunta de documentación, rúbrica,
+contribuciones individuales y ensayo de la demostración completa. Nube opcional.
+No se han contratado recursos cloud.
 
-## Diseño preliminar de monitoreo
+## Diseño de monitoreo
 
-No hay fechas: un experimento de drift futuro debe identificarse como simulación,
-no como deterioro observado en producción. Referencia: entrenamiento; comparación:
-un lote nuevo o una copia alterada deliberadamente con propósito didáctico.
-
-| Medida propuesta | Umbral inicial | Acción |
-|---|---|---|
-| Esquema, faltantes, rangos imposibles | Cualquier incumplimiento | Rechazar lote y revisar origen |
-| Drift de RAM/batería/resolución | Definir con datos de referencia y calibración | Investigar antes de reentrenar |
-| F1 macro con etiquetas reales | < 0.90 en lote suficiente | Revisar errores y evaluar candidato |
-| Latencia p95 de API | Acordar tras medir servicio local | Revisar carga y recursos |
+El diseño completo con umbrales, frecuencias, acciones y límites de la demostración
+está en [monitoreo.md](monitoreo.md). El reporte usa referencia de entrenamiento y
+un lote simulado, sin consultar el test ni conservar datos originales. El umbral
+calibrado es aproximadamente 0,115; solo el escenario alterado alerta por RAM y batería.
+La operación continua y la evaluación con etiquetas nuevas se describen como diseño
+propuesto; no se afirma que haya drift real o pérdida de rendimiento en producción.
 
 ## Fuentes técnicas
 

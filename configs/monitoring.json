@@ -1,0 +1,8 @@
+{
+  "seed": 2026,
+  "permutations": 199,
+  "quantile": 0.99,
+  "minimum_batch_rows": 200,
+  "ram_shift_mb": 1000,
+  "battery_multiplier": 1.3
+}

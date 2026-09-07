@@ -65,6 +65,10 @@ El puerto se publica solo en el equipo local. Si 8000 está ocupado, cambie el p
 
 ## Prueba alternativa con Python
 
+Para generar el reporte de monitoreo con la misma imagen ejecute
+`docker compose run --rm monitor`. Abra `docs/results/monitoring/drift.html`.
+La [guía de monitoreo](monitoreo.md) explica la simulación y el diseño propuesto.
+
 Si ya entrenó con uv, puede probar la misma API sin contenedor:
 
 ```sh
