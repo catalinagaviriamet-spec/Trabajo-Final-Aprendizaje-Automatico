@@ -9,7 +9,7 @@ services:
   train:
     build: .
     image: mobile-prices:local
-    command: ["python", "-m", "src.pipeline", "run"]
+    command: ["sh", "-c", "python -m src.pipeline run && python -m src.models.gate"]
     volumes:
       - trained-model:/app/models
     profiles: ["training"]

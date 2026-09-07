@@ -51,8 +51,5 @@ def test_monitoring_excludes_test_and_keeps_batches_disjoint():
         for b in batches[i + 1 :]:
             assert a.isdisjoint(b)
     assert list(reference.columns) == FEATURES
-    pd.testing.assert_frame_equal(
-        current.drop(columns=["ram", "battery_power"]),
-        shifted.drop(columns=["ram", "battery_power"]),
-    )
-    np.testing.assert_array_equal(shifted.ram - current.ram, 1000)
+    pd.testing.assert_frame_equal(shifted, current.loc[shifted.index])
+    assert len(shifted) == len(current) // 2

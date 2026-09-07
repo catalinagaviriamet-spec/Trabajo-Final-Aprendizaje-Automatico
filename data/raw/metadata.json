@@ -1,0 +1,10 @@
+{
+  "dataset": "mobile_prices",
+  "url": "https://raw.githubusercontent.com/Yerlith/Aprendizaje-automatico/25f42d01c0f239d5b5daf51cb48b4370404a3ffb/data/mobile_prices.csv",
+  "sha256": "f9e8cd3154b8684a1be0ff401b1fba7750710af6bd076a399c6ce7ceb979c624",
+  "rows": 2000,
+  "predictors": 20,
+  "target": "price_range",
+  "stored_dataset": false,
+  "license": "Desconocida; no se afirma permiso de redistribución. Solo lector por URL."
+}

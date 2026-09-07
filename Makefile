@@ -1,4 +1,21 @@
-.PHONY: install train test lint format mlflow help
+.PHONY: setup smoke install train test lint check format mlflow model-card promote monitor help
+
+setup: install
+
+smoke:
+	uv run python -m scripts.smoke
+
+check: lint test
+	uv run python -m scripts.notebook_outputs --check
+
+model-card:
+	uv run python -m scripts.model_card
+
+promote:
+	uv run python -m src.models.gate
+
+monitor:
+	uv run python -m src.monitoring
 
 help:
 	@echo "Available commands:"
@@ -13,7 +30,7 @@ install:
 	uv sync --locked --python 3.12
 
 train:
-	uv run python -m src.models.train
+	uv run python -m src.pipeline run
 
 test:
 	uv run pytest

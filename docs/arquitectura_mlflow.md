@@ -59,7 +59,7 @@ flowchart LR
 
 El alias `champion` se asigna solo cuando el modelo cumple criterios de aceptación definidos en el proyecto.
 
-En el entrenamiento se verifica:
+El entrenamiento registra candidate. En el gate separado (`make promote`) se verifica:
 
 - `test_f1_macro >= 0.90`
 - recall mínimo por clase >= 0.85
@@ -121,10 +121,10 @@ En la pestaña `Models`:
 - observa tags
 - usa el alias `champion` para identificar el modelo listo
 
-### Consultar alias desde CLI
+### Ejecutar el gate desde CLI
 
 ```bash
-mlflow models get-model-version --name mobile-price-classifier --alias champion
+uv run python -m src.models.gate
 ```
 
 Si prefieres hacerlo desde Python:
@@ -132,6 +132,9 @@ Si prefieres hacerlo desde Python:
 ```python
 from mlflow import MlflowClient
 
+import mlflow
+
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
 client = MlflowClient()
 print(client.get_model_version_by_alias("mobile-price-classifier", "champion"))
 ```

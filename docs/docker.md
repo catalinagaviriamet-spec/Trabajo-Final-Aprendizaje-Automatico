@@ -26,7 +26,7 @@ docker compose up -d --wait api
 ```
 
 El entrenamiento ejecuta Prefect, lee la URL pública en memoria, valida el checksum,
-compara los modelos y guarda el pipeline ganador en un volumen Docker. El CSV no se
+compara los modelos, ejecuta el gate separado y guarda el pipeline aprobado en un volumen Docker. El CSV no se
 guarda ni se incluye en la imagen. El modelo se genera en el mismo entorno que lo sirve.
 El contenedor de entrenamiento queda detenido para conservar MLflow, logs y reportes.
 Puede consultar su salida con `docker logs mobile-prices-training` y copiar los reportes:
@@ -67,7 +67,7 @@ El puerto se publica solo en el equipo local. Si 8000 está ocupado, cambie el p
 
 Para generar el reporte de monitoreo con la misma imagen ejecute
 `docker compose run --rm monitor`. Abra `docs/results/monitoring/drift.html`.
-La [guía de monitoreo](monitoreo.md) explica la simulación y el diseño propuesto.
+La [guía de monitoreo](monitoreo.md) explica las particiones reales y el diseño propuesto.
 
 Si ya entrenó con uv, puede probar la misma API sin contenedor:
 

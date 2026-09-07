@@ -137,7 +137,7 @@ def train(frame=None):
     plt.savefig(output / "confusion_matrix.png", dpi=150)
     plt.close()
     (ROOT / "models").mkdir(exist_ok=True)
-    joblib.dump(model, ROOT / "models/best_model.joblib")
+    joblib.dump(model, ROOT / "models/candidate.joblib")
     with mlflow.start_run(run_id=run_ids[winner]):
         mlflow.log_metrics(metrics)
         mlflow.log_artifact(str(output / "evaluation.json"))
@@ -147,6 +147,10 @@ def train(frame=None):
             sk_model=model,
             name="model",
             signature=infer_signature(x_train, model.predict(x_train)),
+            input_example=pd.DataFrame(
+                [json.loads((ROOT / "configs/prediction_example.json").read_text())],
+                columns=x_train.columns,
+            ),
         )
         registered = mlflow.register_model(info.model_uri, "mobile-price-classifier")
         client = mlflow.MlflowClient()
@@ -159,10 +163,14 @@ def train(frame=None):
         client.set_model_version_tag(
             "mobile-price-classifier", registered.version, "acceptance_passed", str(passed)
         )
-        if passed:
-            client.set_registered_model_alias(
-                "mobile-price-classifier", "champion", registered.version
-            )
+        client.set_model_version_tag(
+            "mobile-price-classifier", registered.version, "validation_status", "pending_gate"
+        )
+        client.set_registered_model_alias(
+            "mobile-price-classifier", "candidate", registered.version
+        )
+        summary["model_version"] = registered.version
+        (output / "evaluation.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(leaderboard.to_string(index=False))
     print(json.dumps(summary, indent=2))
     return summary

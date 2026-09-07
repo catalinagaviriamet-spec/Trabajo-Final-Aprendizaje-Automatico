@@ -11,7 +11,10 @@ from src.monitoring.drift import calibrate, compare, make_batches
 
 def render(report):
     sections = []
-    for title, key in [("Lote sin alteraciones", "control"), ("Cambio simulado", "simulated")]:
+    for title, key in [
+        ("Lote de control real", "control"),
+        ("Selección real con mayor RAM", "simulated"),
+    ]:
         result = report[key]
         alerts = ", ".join(result["alert_features"]) or "Ninguna"
         rows = "".join(
@@ -36,15 +39,16 @@ def render(report):
         "background:white}td,th{padding:10px;text-align:left;border-bottom:1px solid #ddd}"
         "th{background:#dce7f7}meter{width:100px}h1,h2{color:#174b77}"
         "</style><h1>Monitoreo de datos de celulares</h1>"
-        "<p><strong>Demostración simulada. No son datos nuevos de producción.</strong></p>"
+        "<p><strong>Particiones reales sin valores alterados. No son datos nuevos de producción.</strong></p>"
         f"<p>Referencia: {report['reference_rows']} filas. "
-        f"Calibración: {report['calibration_rows']}. Cada lote comparado: {report['current_rows']}. "
+        f"Calibración: {report['calibration_rows']}. Control: {report['current_rows']}. "
+        f"Selección con mayor RAM: {report['selected_rows']}. "
         "Son subconjuntos del entrenamiento; el test reservado no se utiliza.</p>"
-        f"<p>Alerta si distancia &gt; <b>{report['threshold']:.4f}</b>. "
+        f"<p>Umbral control: <b>{report['threshold']:.4f}</b>; "
+        f"umbral selección: <b>{report['selected_threshold']:.4f}</b>. "
         "Umbral calibrado antes de observar el lote comparado. "
         "Una alerta indica cambio en los datos, no pérdida demostrada de precisión.</p>"
-        f"<p>Simulación: RAM +{report['settings']['ram_shift_mb']} MB y batería "
-        f"×{report['settings']['battery_multiplier']} sobre el mismo lote de control. "
+        "<p>La selección contiene la mitad de filas reales con mayor RAM del control. "
         "Solo se guardan estadísticas agregadas, nunca filas del dataset.</p>"
         + "".join(sections)
         + "<h2>Qué hacemos ante una alerta</h2><p>Revisar unidades, fuente y composición "
@@ -55,12 +59,15 @@ def render(report):
     )
 
 
-def run(output):
+def run(output, frame=None):
     settings = json.loads((ROOT / "configs/monitoring.json").read_text())
-    reference, calibration, current, shifted = make_batches(load_data(), settings)
+    reference, calibration, current, shifted = make_batches(
+        load_data() if frame is None else frame, settings
+    )
     threshold = calibrate(reference, calibration, settings)
+    selected_threshold = calibrate(reference, calibration.iloc[: len(shifted)], settings)
     report = {
-        "kind": "simulation_not_production",
+        "kind": "real_partitions_selection_bias_not_production",
         "dataset_sha256": config()["dataset_sha256"],
         "settings": settings,
         "reference_rows": len(reference),
@@ -68,8 +75,12 @@ def run(output):
         "current_rows": len(current),
         "test_used": False,
         "threshold": threshold,
+        "selected_threshold": selected_threshold,
+        "selected_rows": len(shifted),
         "control": compare(reference, current, threshold, settings["minimum_batch_rows"]),
-        "simulated": compare(reference, shifted, threshold, settings["minimum_batch_rows"]),
+        "simulated": compare(
+            reference, shifted, selected_threshold, settings["minimum_batch_rows"]
+        ),
     }
     output.mkdir(parents=True, exist_ok=True)
     (output / "drift.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
@@ -89,4 +100,11 @@ def run(output):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "docs/results/monitoring")
-    run(parser.parse_args().output)
+    parser.add_argument("--check", choices=["control", "selected"])
+    args = parser.parse_args()
+    result = run(args.output)
+    if (
+        args.check
+        and result["control" if args.check == "control" else "simulated"]["alert_features"]
+    ):
+        raise SystemExit(2)

@@ -45,11 +45,8 @@ def make_batches(frame, settings):
     reference = shuffled.iloc[:half].copy()
     calibration = shuffled.iloc[half : half + quarter].copy()
     current = shuffled.iloc[half + quarter :].copy()
-    shifted = current.copy()
-    shifted["ram"] = shifted.ram + settings["ram_shift_mb"]
-    shifted["battery_power"] = (
-        (shifted.battery_power * settings["battery_multiplier"]).round().astype(int)
-    )
+    # Cambio de composición con registros reales, sin fabricar ni modificar valores.
+    shifted = current.sort_values("ram", kind="stable").iloc[len(current) // 2 :].copy()
     return reference, calibration, current, shifted
 
 

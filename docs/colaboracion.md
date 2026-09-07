@@ -36,3 +36,7 @@ El profesor solicita commits propios de cada integrante. La participación conju
 en las decisiones se documenta aquí; su evidencia en Git se construye mediante los
 aportes reales de cada cuenta. Esta actualización no modifica la autoría de commits
 anteriores ni acredita aportes individuales que todavía no se hayan registrado.
+
+## Trabajo compartido desde un equipo
+
+Para los ajustes posteriores a recibir la rúbrica, el equipo confirmó que Carolina trabaja conjuntamente desde este computador. Los commits nuevos registran su coautoría mediante el tráiler Co-authored-by; no se reescribe el historial ni se cambia la autora de trabajos anteriores. Esta atribución no requiere compartir contraseñas. La asociación al perfil depende de que el correo de coautoría esté vinculado a su cuenta.

@@ -53,11 +53,15 @@ Las instrucciones originales se conservan sin cambios en [README.profe](README.p
 - Tracking en MLflow, registro del mejor pipeline y alias champion si cumple las metas.
 - Pipeline Prefect con validación, reintentos de conexión y programación local configurable.
 - API FastAPI de predicción y ejecución reproducible con Docker Compose.
-- Reporte de drift simulado y diseño de monitoreo con umbrales y acciones.
+- Reporte de drift con particiones reales y diseño de monitoreo con umbrales y acciones.
 - Pruebas unitarias y controles de calidad con Ruff y GitHub Actions.
 
-**Pendientes de cierre:** revisión conjunta de la entrega, rúbrica y contribuciones individuales.
+**Pendientes de cierre:** revisión conjunta de la entrega y contribuciones individuales. La [revisión de la rúbrica](docs/revision-rubrica.md) distingue evidencias y límites frente al nivel 5.
 El workflow deploy.yml sigue siendo una plantilla manual, sin despliegue real.
+
+## Comandos de la rúbrica
+
+Con Git, uv y Make instalados: `make setup`, `make smoke`, `make train` y `make promote`, en ese orden. En Windows puede usar Make desde WSL o los comandos `uv run` equivalentes. `make check` ejecuta calidad, pruebas y control de outputs; `make model-card` genera la ficha. Tolerancia de reproducción: ±0,005 en accuracy y F1 macro respecto al resultado publicado. Las salidas de notebooks se limpian antes de publicar con `uv run python -m scripts.notebook_outputs`.
 
 ## Inicio rápido
 
@@ -140,6 +144,8 @@ La arquitectura detallada del proyecto y la guía de interpretación de MLflow s
 
 ### Alias `champion`
 
+El entrenamiento solo asigna `candidate`. Ejecute `make promote` (o `uv run python -m src.models.gate`) para comprobar y promover el artefacto; Docker ejecuta ambos pasos secuencialmente.
+
 El alias `champion` identifica la versión del modelo registrado que cumple las metas del proyecto. La asignación se hace solo si:
 
 - F1 macro en test >= 0.90
@@ -151,7 +157,7 @@ Esto permite distinguir claramente entre modelos experimentales y la versión va
 
 Primer experimento: ganó la regresión logística (C=10), con F1 macro CV de 0.9630.
 En test obtuvo **97.5 % de accuracy (390/400)** y **F1 macro de 0.9750**.
-Verificación local: 31 pruebas aprobadas y tres notebooks ejecutados sin errores.
+Verificación local: 32 pruebas aprobadas y tres notebooks ejecutados sin errores.
 
 Consulte la [comparación por validación cruzada](docs/results/leaderboard.csv), la
 [evaluación final](docs/results/evaluation.json) y el [resumen interpretado](docs/resultados.md).
@@ -209,8 +215,8 @@ uv run python -m src.monitoring
 
 Con Docker: `docker compose run --rm monitor`, después de construir la imagen.
 Abra `docs/results/monitoring/drift.html`: el lote sin alteraciones no genera alertas;
-al aumentar RAM y batería en una simulación, ambas variables generan alerta.
-No son observaciones de producción y no demuestran pérdida de precisión.
+una selección de filas reales con mayor RAM genera alerta en RAM, sin alterar valores.
+No son observaciones temporales de producción y no demuestran pérdida de precisión.
 Consulte la [explicación, metodología y diseño de monitoreo](docs/monitoreo.md).
 Solo se guardan estadísticas agregadas; la API no recolecta automáticamente lotes.
 
@@ -257,6 +263,6 @@ Existen ceros cuestionables en dimensiones de pantalla; se documentan y se conse
 en el primer experimento. No hay fechas ni precios monetarios: no se ha demostrado
 vigencia comercial ni drift real. Se necesita validación externa antes de uso empresarial.
 
-El profesor menciona rubrica-instructor.md, datasets-curados.md,
+Ya se incorporó [rubrica-instructor.md](rubrica-instructor.md). El profesor también menciona datasets-curados.md,
 mvp-minimo-aprobable.md, peer-review-template.md y starter-template/; esos
 materiales aún no fueron adjuntados y sus enlaces relativos en README.profe no funcionan.

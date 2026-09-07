@@ -59,6 +59,10 @@ def create_app(model_path=None):
     async def lifespan(app):
         # Solo cargar el artefacto generado por nuestro entrenamiento, nunca un archivo del cliente.
         app.state.model = joblib.load(path) if path.is_file() else None
+        metadata = path.with_name("model_metadata.json")
+        app.state.model_version = (
+            json.loads(metadata.read_text()).get("candidate") if metadata.is_file() else None
+        )
         yield
 
     app = FastAPI(
@@ -79,7 +83,7 @@ def create_app(model_path=None):
     @app.get("/health")
     def health():
         ready()
-        return {"status": "ok", "model_loaded": True}
+        return {"status": "ok", "model_loaded": True, "model_version": app.state.model_version}
 
     @app.post("/predict")
     def predict(phone: Phone):

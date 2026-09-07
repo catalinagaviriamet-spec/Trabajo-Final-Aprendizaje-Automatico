@@ -12,6 +12,7 @@ from prefect.cache_policies import NO_CACHE
 
 from src.data.dataset import ROOT, config, read_remote_bytes, validate
 from src.models.train import train
+from src.monitoring.__main__ import run as monitor
 
 
 def retry_network_error(task, task_run, state):
@@ -32,7 +33,7 @@ def retry_network_error(task, task_run, state):
     persist_result=False,
     cache_policy=NO_CACHE,
     retries=2,
-    retry_delay_seconds=5,
+    retry_delay_seconds=[5, 10],
     retry_condition_fn=retry_network_error,
 )
 def read_dataset():
@@ -77,6 +78,7 @@ def training_pipeline(validate_only: bool = False):
     }
     if not validate_only:
         evaluation = train_model(frame)
+        monitor_dataset(frame)
         summary.update(
             {
                 "winner": evaluation["winner"],
@@ -91,3 +93,26 @@ def training_pipeline(validate_only: bool = False):
     (logs / "pipeline_last_run.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     get_run_logger().info("Flujo completado: %s", summary)
     return summary
+
+
+@task(name="monitorear-datos", persist_result=False, cache_policy=NO_CACHE)
+def monitor_dataset(frame):
+    """Comparte la lectura en memoria y adjunta solo reportes agregados al candidato."""
+    import mlflow
+    from prefect.artifacts import create_markdown_artifact
+
+    output = ROOT / "docs/results/monitoring"
+    result = monitor(output, frame=frame)
+    candidate = mlflow.MlflowClient().get_model_version_by_alias(
+        "mobile-price-classifier", "candidate"
+    )
+    with mlflow.start_run(run_id=candidate.run_id):
+        mlflow.log_artifact(str(output / "drift.html"), artifact_path="monitoring")
+        mlflow.log_artifact(str(output / "drift.json"), artifact_path="monitoring")
+    create_markdown_artifact(
+        key="drift-datos",
+        markdown=f"Control: {result['control']['alert_features']}; "
+        f"selección real: {result['simulated']['alert_features']}. "
+        "HTML completo en los artefactos MLflow del candidato. No son datos temporales.",
+    )
+    return result

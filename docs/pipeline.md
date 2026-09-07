@@ -39,7 +39,7 @@ La primera ejecución puede tardar mientras se inicializa el servidor.
 
 En la terminal deben aparecer las tareas en estado `Completed`. El resumen agregado
 queda en `logs/pipeline_last_run.json`. Se mantienen los resultados habituales en
-`docs/results/`, el modelo local en `models/best_model.joblib` y el registro MLflow.
+`docs/results/`, el candidato local en `models/candidate.joblib` (el gate exporta luego `models/best_model.joblib`) y el registro MLflow.
 
 Cada ejecución completa crea nuevas ejecuciones y una versión de modelo en MLflow;
 reemplaza los reportes locales. Con la misma fuente y configuración es una reproducción
@@ -119,3 +119,7 @@ se comprobó y cerró su servidor sin errores de eventos.
 Referencias oficiales: [ejecución local](https://docs.prefect.io/v3/how-to-guides/deployment_infra/run-flows-in-local-processes),
 [horarios](https://docs.prefect.io/v3/how-to-guides/deployments/create-schedules) y
 [persistencia de resultados](https://docs.prefect.io/v3/how-to-guides/workflows/cache-workflow-steps).
+
+## Ajustes tras recibir la rúbrica
+
+El flow registra candidate, genera drift con las mismas filas en memoria y adjunta reportes al run de MLflow. No promueve champion. `make promote` ejecuta el gate aparte. Los reintentos de conexión esperan 5 y 10 segundos (backoff para reducir carga tras fallos transitorios). No se cachean dataframes en disco por la restricción de almacenamiento.

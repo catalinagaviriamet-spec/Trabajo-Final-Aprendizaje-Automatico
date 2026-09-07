@@ -99,7 +99,7 @@ plt.show()
 - No aplicar sobremuestreo: las clases están equilibradas.
 - Escalar para regresión logística y SVM dentro de cada fold; los árboles no lo requieren.
 - Contrastar la hipótesis de RAM leyendo la tabla anterior; una asociación fuerte no significa que defina por sí sola el precio.
-- No hay fechas: el monitoreo posterior será una demostración explícitamente simulada hasta contar con lotes reales.
+- No hay fechas: el monitoreo compara particiones reales del dataset como demostración de sesgo de selección, no como vigilancia temporal de producción.
 
 **Para discutir en grupo:** ¿qué variables tienen asociación débil? ¿Puede una variable
 con poca correlación ser útil al combinarla con otras? ¿Qué limita trasladar este dataset al mercado actual?
@@ -181,7 +181,7 @@ uv run mlflow ui --backend-store-uri sqlite:///mlflow.db --host 127.0.0.1 --port
 
 Abra http://127.0.0.1:5000. En el experimento `mobile-price-classification` verá
 una ejecución por algoritmo y el CSV con todas sus configuraciones. El mejor pipeline
-se registra como `mobile-price-classifier`; recibe alias `champion` si supera las metas.
+se registra como `mobile-price-classifier`; recibe alias `candidate`; `make promote` ejecuta el gate antes de asignar `champion`.
 La base y los modelos permanecen locales, mientras las métricas se publican en GitHub.
 
 **Siguiente etapa:** explicar los errores, orquestar con Prefect y servir el pipeline

@@ -13,6 +13,13 @@ jobs:
       - uses: actions/checkout@v4
       - run: docker compose build
       - run: docker compose run --rm monitor
+      - run: |
+          docker compose run --rm monitor python -m src.monitoring --check control
+          set +e
+          docker compose run --rm monitor python -m src.monitoring --check selected
+          code=$?
+          set -e
+          test "$code" -eq 2
       - run: docker compose run --name mobile-prices-training train
       - run: docker compose up -d --wait api
       - run: docker compose exec -T api python -c "import urllib.request; print(urllib.request.urlopen('http://localhost:8000/health').read().decode())"

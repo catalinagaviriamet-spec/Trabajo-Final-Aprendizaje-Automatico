@@ -1,128 +1,84 @@
-# Monitoreo: explicación y demostración
+# Monitoreo con particiones reales
 
-Entrenar es enseñar al modelo con ejemplos. Monitorear es revisar, después de ponerlo
-en uso, si los datos y el servicio siguen comportándose como esperamos.
-Un aumento de RAM en los celulares nuevos puede cambiar la distribución de entrada:
-eso se llama **data drift**. No demuestra por sí solo que el modelo prediga mal.
-Para medir errores necesitamos etiquetas reales, que pueden llegar después.
+Monitorear es revisar si cambian los datos o el servicio después de entrenar.
+Data drift significa cambio en la distribución de entrada; no demuestra por sí solo
+que disminuyó la precisión. Para medir rendimiento hacen falta etiquetas reales.
 
-## Qué está implementado
-
-- Reporte reproducible de drift con comparación sin alteraciones y cambio simulado.
-- Comparación de las 20 características, con umbral calibrado y semillas fijas.
-- Reportes HTML y JSON con estadísticas agregadas; sin filas originales ni CSV local.
-- Ejecución manual con Python o Docker, sin modelo entrenado ni credenciales.
-- Pruebas unitarias de distancia, alertas, particiones y reproducibilidad.
-
-El reporte es una demostración por lotes. No recoge automáticamente las solicitudes
-de la API, no envía notificaciones y no reentrena el modelo. La tabla de operación
-que sigue es el diseño propuesto, no una infraestructura de monitoreo ya desplegada.
-
-## Reproducir y abrir el reporte
-
-Desde la raíz del repositorio:
+## Reproducir
 
 ```sh
 uv run python -m src.monitoring
-```
-
-O con Docker abierto (no necesita Python ni entrenar primero):
-
-```sh
-docker compose build
 docker compose run --rm monitor
 ```
 
-Abra `docs/results/monitoring/drift.html` en su navegador. También se genera
-`drift.json`, que facilita verificar los números. Solo se necesita Internet para
-leer la fuente pública y, la primera vez, construir la imagen. Los resultados se
-guardan en la carpeta del proyecto mediante un volumen de Docker.
+Son alternativas. Con Docker primero construya la imagen. Abra
+`docs/results/monitoring/drift.html`; el JSON conserva únicamente estadísticas agregadas.
+El flow de entrenamiento también genera el reporte y lo adjunta al run candidato en
+MLflow, con un resumen como artifact de Prefect. No se guarda el CSV ni filas originales.
 
-## Cómo construimos la demostración
+## Particiones y método
 
-El dataset no contiene fechas ni observaciones posteriores al despliegue. Por tanto,
-**ninguno de estos lotes representa producción ni una evolución temporal real**.
+De las 1.600 filas de entrenamiento, una permutación fija separa referencia (800),
+calibración (400) y control (400), disjuntos. No se consulta el test reservado.
+El escenario de selección usa las 200 filas reales con mayor RAM del control.
+No modifica ningún valor ni inventa observaciones. Es un cambio de composición
+deliberado para demostrar sensibilidad, no una llegada temporal real de celulares.
 
-De las 1.600 filas del entrenamiento original, una permutación con semilla 2026 separa:
+La distancia D es la máxima diferencia entre distribuciones acumuladas empíricas,
+entre 0 y 1. Admite empates; en binarias es diferencia absoluta de proporciones.
+Se calcula sobre las 20 variables. No aplicamos p-valores KS que asumen continuidad.
 
-| Subconjunto | Filas | Uso |
-|---|---:|---|
-| Referencia | 800 | Distribución con la que comparamos |
-| Calibración | 400 | Fijar el umbral antes de observar los escenarios |
-| Lote de control | 400 | Simular la llegada de otro lote sin cambios deliberados |
+El umbral es el percentil 99 de los máximos D entre variables en 199 permutaciones
+de referencia y calibración. Se conserva cada fila completa al permutar. Para la
+selección de 200 filas se recalibra usando 200 filas de calibración, manteniendo
+los tamaños 800/200; el control usa 800/400. Los lotes comparados no fijan el umbral.
+Es una aproximación empírica bajo intercambiabilidad, no garantía de falsas alertas
+de 1 % en producción. Nuevos tamaños o poblaciones requieren recalibración.
 
-Los tres subconjuntos son disjuntos. Las 400 filas del test del modelo no se usan.
-No utilizamos price_range ni cambiamos el entrenamiento o sus hiperparámetros.
-El segundo escenario copia en memoria el lote de control, suma 1.000 MB a RAM y
-multiplica la batería por 1,3, redondeando a entero. Esas son las únicas alteraciones.
-No asignamos etiquetas reales a ese lote modificado ni calculamos F1 con etiquetas antiguas.
+La alerta exige D > umbral. D expresa magnitud del cambio; un p-valor pequeño por sí
+solo no basta: con n grande puede detectar diferencias minúsculas sin relevancia
+operativa. La calibración considera las 20 comparaciones conjuntamente. Este detector
+univariado puede omitir cambios en relaciones entre variables.
 
-## Medida y umbral
+Resultado: control sin alertas; selección real con alerta en RAM. La alerta por
+batería del reporte anterior correspondía a valores alterados y se retiró al recibir
+la rúbrica. Ahora todas las comparaciones publicadas usan registros originales.
 
-Para cada característica calculamos D, la mayor distancia absoluta entre sus dos
-distribuciones acumuladas empíricas. D está entre 0 y 1: cuanto mayor, más distintas
-son las distribuciones. Para binarias equivale a la diferencia absoluta de proporciones.
-Usamos la distancia KS, **sin aplicar los p-valores estándar que asumen continuidad**.
+## Check y códigos de salida
 
-Mezclamos referencia y calibración, redistribuimos las filas 199 veces preservando
-los tamaños 800/400 y calculamos, en cada permutación, el máximo D entre las 20
-características. El percentil 99 de esos máximos, con método `higher`, fija el umbral.
-Permutar filas completas conserva las asociaciones entre características durante la
-calibración. El lote de control y el simulado no participan en ella.
+```sh
+uv run python -m src.monitoring --check control
+uv run python -m src.monitoring --check selected
+```
 
-Esta calibración conjunta considera que observamos 20 variables. Es una aproximación
-empírica bajo intercambiabilidad, con pocas permutaciones, no una garantía de 1 % de
-falsas alertas en producción. Cambiar tamaños, población o variables exige recalibrar.
-La comparación alerta cuando D es estrictamente mayor que el umbral. Se exigen al
-menos 200 filas por lote; menos observaciones se rechazan como evidencia insuficiente.
+El control retorna 0. La selección retorna 2 por drift. Errores de lectura/contrato
+fallan con otro código. `scripts/verify_drift_check.py` y el workflow Docker comprueban
+esos resultados explícitamente: aceptar el fallo esperado no oculta fallos inesperados.
 
-Configuración: `configs/monitoring.json`. Código: `src/monitoring/`.
-No se añadieron dependencias: se emplean NumPy y pandas ya incluidos en el proyecto.
+## Diseño del servicio y acciones
 
-## Resultado observado
+Las tres integrantes son destinatarias de las alertas. Los siguientes umbrales son
+metas iniciales académicas, no SLAs medidos ni exigencias numéricas del profesor.
 
-- Umbral: aproximadamente **0,115**.
-- Control sin alteraciones: **ninguna característica con alerta**.
-- Simulación: **RAM y battery_power con alerta**.
-
-Estos resultados comprueban la demostración elegida, no sensibilidad o especificidad
-generales del detector. Sin alerta no significa que todo sea igual: los cambios en
-relaciones entre variables pueden pasar inadvertidos en comparaciones univariadas.
-Un cambio de datos tampoco equivale a concept drift (cambio en la relación con la etiqueta).
-
-## Diseño de operación propuesto
-
-Las tres integrantes revisan las alertas conjuntamente. Los umbrales siguientes son
-decisiones académicas iniciales, no requisitos numéricos del profesor ni SLAs medidos.
-
-| Señal | Frecuencia y umbral inicial | Acción |
+| Señal | Umbral y ventana propuesta | Acción |
 |---|---|---|
-| Calidad de cada solicitud | Campos faltantes, extras o fuera del contrato: cualquier caso | La API ya devuelve 422; proponer contador agregado y revisar documentación/origen si supera 5 % de al menos 100 solicitudes en 15 minutos |
-| Disponibilidad | Consultar /health cada minuto; 3 fallos consecutivos | Revisar contenedor, modelo y logs; reiniciar solo tras identificar el fallo |
-| Latencia | p95 > 1 segundo en 2 ventanas de 5 minutos, cada una con al menos 100 solicitudes | Medir CPU/memoria y carga; investigar antes de ampliar recursos. Meta provisional que debe validarse con prueba de carga |
-| Errores del servidor | HTTP 5xx > 1 % en 5 minutos y al menos 100 solicitudes | Revisar logs y disponibilidad del modelo; corregir o volver a una versión estable |
-| Drift de entradas | Revisar diariamente al reunir un lote de 400; D > umbral calibrado en cualquier variable | Verificar unidades, fuente y mezcla de gamas; contrastar con el siguiente lote y solicitar etiquetas reales |
-| Rendimiento con etiquetas reales | F1 macro < 0,90 o recall de alguna clase < 0,85 en un lote independiente de al menos 400 casos y 50 por clase | Revisar errores y representatividad; comparar un candidato con validación independiente antes de reemplazar el modelo |
+| Calidad | Cualquier entrada inválida; 422 > 5 % de 100 solicitudes en 15 min | Rechazar entrada y revisar unidades/origen |
+| Salud | 3 fallos de /health consecutivos, consultado cada minuto | Revisar contenedor y artefacto aprobado |
+| Latencia | p95 > 1 s en 2 ventanas de 5 min con 100 solicitudes cada una | Investigar carga, CPU y memoria |
+| Errores | 5xx > 1 % de 100 solicitudes en 5 min | Revisar logs y considerar rollback |
+| Drift | Lote diario con tamaño compatible; D > umbral calibrado | Investigar composición y obtener etiquetas |
+| Precisión | F1 < 0,90 o recall < 0,85, mínimo 400 etiquetas y 50 por clase | Revisar errores y evaluar un candidato |
 
-Sin etiquetas no informaremos accuracy o F1 de producción. Sin volumen suficiente
-indicaremos «datos insuficientes», no «todo correcto». Una alerta crítica de contrato
-o disponibilidad se atiende inmediatamente; una alerta de drift requiere investigación.
-No se promoverá un modelo automáticamente solo por detectar drift.
+Prometheus mediría el **servicio** (solicitudes, errores, duración); el reporte mide
+los **datos**. Prometheus y su dashboard no están implementados en esta versión.
+La API no acumula automáticamente lotes y no se notifican alertas de forma automática.
+Sin etiquetas no se reporta F1 de producción; sin volumen suficiente, «datos insuficientes».
 
-Para operar de verdad habría que instrumentar contadores y tiempos, programar las
-consultas, disponer de etiquetas y acordar cómo obtener lotes nuevos. Manteniendo la
-restricción del profesor, procesaríamos esos lotes en memoria desde una fuente autorizada;
-solo conservaríamos métricas agregadas, sin cuerpos de solicitudes ni filas del dataset.
+Consulte [la política de reentrenamiento](politica-de-reentrenamiento.md) y
+[los riesgos](riesgos.md). No se reentrena ni promueve un modelo por una alerta aislada.
 
-## Guion para explicar entre las tres
+## Fuentes
 
-«La API predice la gama. El monitoreo revisa si están llegando celulares diferentes
-a los de referencia. En el control no hay alertas; al aumentar RAM y batería de forma
-simulada, ambas se detectan. Antes de reentrenar investigaríamos la causa y mediríamos
-el rendimiento con etiquetas reales. Este reporte es una simulación, no producción».
-
-## Referencias metodológicas
-
-- [Distancia KS y sus supuestos, SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html).
-- [Permutaciones de muestras independientes, SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html).
-- Requisito de reporte y diseño: fase 5 de [README.profe](../README.profe).
+- [Distancia KS, SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html).
+- [Permutaciones independientes, SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html).
+- [Rúbrica del instructor](../rubrica-instructor.md).

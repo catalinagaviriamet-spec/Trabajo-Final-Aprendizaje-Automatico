@@ -9,6 +9,9 @@ __pycache__/
 !.env.example
 data/*
 !data/.gitkeep
+!data/raw/
+data/raw/*
+!data/raw/metadata.json
 models/*
 !models/.gitkeep
 logs/*

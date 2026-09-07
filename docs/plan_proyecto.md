@@ -31,7 +31,7 @@ no acredita por sí mismo su ejecución. Véase la [guía de colaboración](cola
 | Lunes 7 | Revisar experimentos, resultados, MLflow y modelo registrado | Las tres integrantes | Revisión conjunta |
 | Martes 8 | Revisar y demostrar el flow Prefect y su programación ya implementados | Las tres integrantes | Revisión conjunta |
 | Miércoles 9 | Revisar y demostrar API FastAPI, validación y Docker implementados | Las tres integrantes | Revisión conjunta |
-| Jueves 10 | Revisar reporte de drift simulado y diseño de monitoreo implementados | Las tres integrantes | Revisión conjunta |
+| Jueves 10 | Revisar reporte de drift de particiones reales y diseño de monitoreo implementados | Las tres integrantes | Revisión conjunta |
 | Viernes 11 | Reproducción desde cero, pruebas y ensayo de demostración | Las tres integrantes | Revisión conjunta |
 | Sábado 12 | Verificación final y entrega; sin nuevas funcionalidades | Las tres integrantes | Revisión conjunta |
 
@@ -88,8 +88,8 @@ No se han contratado recursos cloud.
 
 El diseño completo con umbrales, frecuencias, acciones y límites de la demostración
 está en [monitoreo.md](monitoreo.md). El reporte usa referencia de entrenamiento y
-un lote simulado, sin consultar el test ni conservar datos originales. El umbral
-calibrado es aproximadamente 0,115; solo el escenario alterado alerta por RAM y batería.
+un lote de registros reales seleccionados, sin consultar el test ni conservar datos originales. El umbral
+calibrado es aproximadamente 0,115; la selección con mayor RAM alerta por RAM, sin modificar los valores.
 La operación continua y la evaluación con etiquetas nuevas se describen como diseño
 propuesto; no se afirma que haya drift real o pérdida de rendimiento en producción.
 
