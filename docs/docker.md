@@ -36,8 +36,8 @@ docker cp mobile-prices-training:/app/docs/results ./resultados-docker
 ```
 
 Abra [la documentación interactiva](http://127.0.0.1:8000/docs).
-Seleccione **POST /predict → Try it out**, pegue el contenido de
-`configs/prediction_example.json` y pulse **Execute**. Es un ejemplo sintético,
+Seleccione **POST /predict → Try it out** y pulse **Execute**. El formulario ya incluye
+el contenido de `configs/prediction_example.json`. Es un ejemplo sintético,
 no una fila copiada del dataset. La respuesta contiene `price_range` y su etiqueta.
 Las unidades están en `docs/dataset.md`. El servicio valida los 20 campos, rechaza
 campos extra y valores inválidos con HTTP 422. Sin modelo devuelve HTTP 503.

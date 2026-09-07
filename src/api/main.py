@@ -1,5 +1,6 @@
 """Sirve el pipeline completo, incluido su preprocesamiento."""
 
+import json
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -22,7 +23,13 @@ LABELS = ["Precio bajo", "Precio medio", "Precio alto", "Precio muy alto"]
 class Phone(BaseModel):
     """Especificaciones en las unidades del diccionario del dataset."""
 
-    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    model_config = ConfigDict(
+        extra="forbid",
+        allow_inf_nan=False,
+        json_schema_extra={
+            "example": json.loads((ROOT / "configs/prediction_example.json").read_text())
+        },
+    )
     battery_power: Positive
     blue: Binary
     clock_speed: Annotated[float, Field(ge=0)]
