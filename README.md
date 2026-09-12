@@ -41,7 +41,7 @@ pesos ni reemplaza una evaluación comercial con costos, competencia y demanda.
 Usamos el [CSV indicado por el equipo](https://github.com/Yerlith/Aprendizaje-automatico/blob/25f42d01c0f239d5b5daf51cb48b4370404a3ffb/data/mobile_prices.csv),
 con 2.000 filas, 20 predictores y 500 casos por clase.
 La procedencia, unidades y limitaciones están en el [diccionario](docs/dataset.md).
-Las instrucciones originales se conservan sin cambios en [README.profe](README.profe).
+La documentación de ejecución y resultados se encuentra en la carpeta docs/.
 
 ## Qué está implementado
 
@@ -56,7 +56,7 @@ Las instrucciones originales se conservan sin cambios en [README.profe](README.p
 - Reporte de drift con particiones reales y diseño de monitoreo con umbrales y acciones.
 - Pruebas unitarias y controles de calidad con Ruff y GitHub Actions.
 
-**Pendientes de cierre:** revisión conjunta de la entrega y contribuciones individuales. La [revisión de la rúbrica](docs/revision-rubrica.md) distingue evidencias y límites frente al nivel 5.
+**Pendientes de cierre:** revisión conjunta de la entrega y contribuciones individuales.
 El workflow deploy.yml sigue siendo una plantilla manual, sin despliegue real.
 
 ## Comandos de la rúbrica
@@ -263,9 +263,7 @@ Existen ceros cuestionables en dimensiones de pantalla; se documentan y se conse
 en el primer experimento. No hay fechas ni precios monetarios: no se ha demostrado
 vigencia comercial ni drift real. Se necesita validación externa antes de uso empresarial.
 
-Ya se incorporó [rubrica-instructor.md](rubrica-instructor.md). El profesor también menciona datasets-curados.md,
-mvp-minimo-aprobable.md, peer-review-template.md y starter-template/; esos
-materiales aún no fueron adjuntados y sus enlaces relativos en README.profe no funcionan.
+Las instrucciones y la rúbrica del profesor se consultan en el aula del curso.
 
 ### Entrega continua local (CD)
 

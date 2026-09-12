@@ -24,9 +24,9 @@ setup = code("""from pathlib import Path
 import sys
 
 ROOT = Path.cwd()
-if not (ROOT / "README.profe").exists():
+if not (ROOT / "pyproject.toml").exists():
     ROOT = ROOT.parent
-if not (ROOT / "README.profe").exists():
+if not (ROOT / "pyproject.toml").exists():
     raise RuntimeError("Abra Jupyter desde la raíz del proyecto")
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))

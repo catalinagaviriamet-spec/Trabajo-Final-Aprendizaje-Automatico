@@ -2,7 +2,7 @@ name: Docker y API
 on:
   workflow_dispatch:
   push:
-    paths: ["Dockerfile", "compose.yaml", "pyproject.toml", "uv.lock", "src/**", "configs/**", "scripts/verify_api.py", ".github/workflows/docker.yml"]
+    paths: ["Dockerfile", "compose.yaml", "pyproject.toml", "uv.lock", "src/**", "configs/**", "notebooks/**", "scripts/build_notebooks.py", "scripts/verify_api.py", ".github/workflows/docker.yml"]
 permissions:
   contents: read
 jobs:

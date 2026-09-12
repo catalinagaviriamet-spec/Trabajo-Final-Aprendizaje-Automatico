@@ -81,4 +81,3 @@ Consulte [la política de reentrenamiento](politica-de-reentrenamiento.md) y
 
 - [Distancia KS, SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html).
 - [Permutaciones independientes, SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html).
-- [Rúbrica del instructor](../rubrica-instructor.md).

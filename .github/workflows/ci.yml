@@ -8,6 +8,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -18,3 +19,5 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run pytest
       - run: uv run python -m scripts.notebook_outputs --check
+      - name: Ejecutar los tres notebooks desde la versión entregada
+        run: uv run python -m scripts.execute_notebooks

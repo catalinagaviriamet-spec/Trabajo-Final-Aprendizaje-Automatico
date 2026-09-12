@@ -98,4 +98,3 @@ propuesto; no se afirma que haya drift real o pérdida de rendimiento en producc
 - [Evaluación y pipelines en scikit-learn](https://scikit-learn.org/stable/modules/cross_validation.html)
 - [Tracking MLflow](https://mlflow.org/docs/latest/ml/tracking/quickstart/)
 - [API de XGBoost](https://xgboost.readthedocs.io/en/stable/python/python_api.html)
-- [Instrucciones del profesor](../README.profe)
