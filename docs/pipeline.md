@@ -4,7 +4,6 @@
 
 Prefect organiza los pasos, registra si completaron o fallaron y permite programar
 ejecuciones. MLflow conserva los parámetros, métricas y versiones del modelo.
-Las tres integrantes comparten el diseño y la revisión de este flujo.
 
 ```text
 mobile-prices-pipeline
@@ -116,9 +115,6 @@ estados y el registro del horario finalizaron correctamente antes de ese aviso. 
 archivo contiene metadatos de la prueba, no el CSV. La ejecución normal `check` también
 se comprobó y cerró su servidor sin errores de eventos.
 
-Referencias oficiales: [ejecución local](https://docs.prefect.io/v3/how-to-guides/deployment_infra/run-flows-in-local-processes),
-[horarios](https://docs.prefect.io/v3/how-to-guides/deployments/create-schedules) y
-[persistencia de resultados](https://docs.prefect.io/v3/how-to-guides/workflows/cache-workflow-steps).
 
 ## Ajustes tras recibir la rúbrica
 
