@@ -16,3 +16,7 @@ original del dataset. Las unidades de entrada están en [dataset.md](dataset.md)
 La API carga la exportación local aprobada por el gate. El gate sí carga `candidate`
 desde MLflow por alias. La API no está conectada directamente al registry, por lo que
 no se afirma cumplir ese punto específico del nivel 5 de Deployment.
+
+## Comprobación desde Windows
+
+El [protocolo de PowerShell](prueba-api-powershell.md) permite probar disponibilidad, predicción y rechazo HTTP 422 sin instalar Python.
