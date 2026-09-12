@@ -51,3 +51,7 @@ La API y el despliegue local con Docker ya están implementados. También hay un
 mostrar primero una predicción y después el reporte: el lote de control no alerta y
 la selección de filas reales con mayor RAM detecta cambio en RAM. El monitoreo continuo de producción
 no está desplegado; se documentan las señales, umbrales y acciones propuestas.
+
+## Ensayo y evidencias
+
+Consulte el [guion de demostración de diez minutos](guion-demostracion.md), con preguntas de sustentación y registro de reproducción externa.
