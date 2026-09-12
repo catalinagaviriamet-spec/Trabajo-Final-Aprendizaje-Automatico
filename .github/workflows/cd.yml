@@ -1,0 +1,51 @@
+name: Entrega continua local
+on:
+  workflow_run:
+    workflows: ["Calidad y pruebas"]
+    types: [completed]
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: entrega-local-main
+  cancel-in-progress: true
+jobs:
+  package:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - name: Validar configuración y construir imagen
+        run: |
+          docker compose config --quiet
+          docker compose build
+      - name: Comprobar la imagen sin descargar datos
+        run: |
+          docker run --rm mobile-prices:local python -c "from src.api.main import app; assert any(route.path == '/predict' for route in app.routes)"
+      - name: Preparar entrega identificada por commit
+        env:
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          mkdir entrega
+          docker save mobile-prices:local | gzip -1 > entrega/mobile-prices.tar.gz
+          cp compose.yaml entrega/
+          cp docs/entrega-continua.md entrega/INSTRUCCIONES.md
+          printf '%s\n' "$SOURCE_SHA" > entrega/COMMIT.txt
+          cd entrega
+          sha256sum mobile-prices.tar.gz > SHA256SUMS.txt
+          gzip -t mobile-prices.tar.gz
+      - name: Publicar paquete descargable
+        uses: actions/upload-artifact@v4
+        with:
+          name: entrega-local-${{ github.event.workflow_run.head_sha }}
+          path: entrega/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7

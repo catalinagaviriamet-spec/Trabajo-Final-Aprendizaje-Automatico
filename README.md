@@ -266,3 +266,7 @@ vigencia comercial ni drift real. Se necesita validación externa antes de uso e
 Ya se incorporó [rubrica-instructor.md](rubrica-instructor.md). El profesor también menciona datasets-curados.md,
 mvp-minimo-aprobable.md, peer-review-template.md y starter-template/; esos
 materiales aún no fueron adjuntados y sus enlaces relativos en README.profe no funcionan.
+
+### Entrega continua local (CD)
+
+Después de aprobar CI en main, GitHub prepara una imagen Docker descargable. Consulte [la guía de entrega continua](docs/entrega-continua.md). Es empaquetado automático para ejecución local; no publica una API en Internet. Sustituye la plantilla deploy pendiente; no se programa un workflow nocturno.
