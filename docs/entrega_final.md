@@ -44,14 +44,3 @@ El alias `champion` representa la versión que cumple las metas de calidad del p
 
 El proyecto es reproducible, validado y bien documentado. La regresión logística ofrece un equilibrio entre rendimiento, simplicidad y explicabilidad. La trazabilidad con MLflow refuerza la credibilidad del proceso experimental y deja una base clara para una futura etapa de despliegue.
 
-## 7. Siguiente paso recomendado
-
-La API y el despliegue local con Docker ya están implementados. También hay un
-[reporte de drift con particiones reales y diseño de monitoreo](monitoreo.md). Para la demostración,
-mostrar primero una predicción y después el reporte: el lote de control no alerta y
-la selección de filas reales con mayor RAM detecta cambio en RAM. El monitoreo continuo de producción
-no está desplegado; se documentan las señales, umbrales y acciones propuestas.
-
-## Ensayo y evidencias
-
-Consulte el [guion de demostración de diez minutos](guion-demostracion.md), con preguntas de sustentación y registro de reproducción externa.
