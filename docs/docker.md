@@ -78,3 +78,7 @@ uv run uvicorn src.api.main:app --host 127.0.0.1 --port 8000
 En otra terminal: `uv run python -m scripts.verify_api`.
 Las pruebas unitarias usan datos sintéticos. El workflow Docker verifica además
 construcción, entrenamiento desde URL y respuestas HTTP en Linux.
+
+## Ayuda ante errores
+
+Consulte [Diagnóstico del arranque local](solucion-arranque.md) para problemas de motor, puerto, descarga o modelo ausente.
